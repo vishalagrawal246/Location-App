@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "549278384590",
+    "firebase_url": "https://gps-location-b8942.firebaseio.com",
+    "project_id": "gps-location-b8942",
+    "storage_bucket": "gps-location-b8942.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549278384590:android:80bfff9922dacb6b01eb9f",
+        "android_client_info": {
+          "package_name": "com.loki.fakelocation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549278384590-k5utqi39l8sjttobrbmv1ek3ce0a7rpm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.loki.fakelocation",
+            "certificate_hash": "7a2ca2d1679aec1b47d83e169599c0d5c15056ba"
+          }
+        },
+        {
+          "client_id": "549278384590-jrntrqufs5iab104pova8grifida682t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA48D1KnW-e4_Rmp3sQ6g0rCUNquuABG4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549278384590-jrntrqufs5iab104pova8grifida682t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
