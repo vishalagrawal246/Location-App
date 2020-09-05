@@ -18,10 +18,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.Settings;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +51,7 @@ import java.net.URLEncoder;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks
         , GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener , View.OnClickListener {
 
-    TextView textView;
+    TextView textView,textView2,textView3;
     Button button;
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
@@ -57,19 +59,26 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private LocationRequest locationRequest;
     static double latitude, longitude;
 
-    Button btn ,btn2,btn3,btn4;
-    EditText editText1,editText2;
+    Button btn,btn2;
+    Button  btn3,btn4,btn5,btn6;
+    EditText editText1,editText3;
+
+
     SharedPreferences sharedPreferences;
     public static final String mypref="mypref";
     public static final String Number="number";
 
-    DatabaseReference rootRef, demoRef;
+    DatabaseReference rootRef, demoRef ;
+    DatabaseReference demoMsg;
 
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         textView = findViewById(R.id.tvLocation);
         button = findViewById(R.id.btnLocation);
@@ -114,30 +123,100 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         });
 
 
-        editText1= (EditText) findViewById(R.id.getNo);
-        editText2= (EditText) findViewById(R.id.getData);
+        editText1 =  findViewById(R.id.getNo);
+        editText3 = findViewById(R.id.getMsg);
+
+        textView2 = findViewById(R.id.sendMsg);
+        textView3=  findViewById(R.id.getData);
 
         btn2=  findViewById(R.id.btn2);
         btn3=  findViewById(R.id.btn3);
         btn4=  findViewById(R.id.btn4);
+        btn5=  findViewById(R.id.btn5);
+        btn6=  findViewById(R.id.btn6);
 
 
-        btn= (Button) findViewById(R.id.btn);
+        btn=  findViewById(R.id.btn);
         btn.setOnClickListener(this);
+
+
+        //reff = FirebaseDatabase.getInstance().getReference();
 
 
         rootRef = FirebaseDatabase.getInstance().getReference();
         // Database reference pointing to demo node
         demoRef = rootRef.child("demo");
+        demoMsg = rootRef.child("Messages");
 
-        btn4.setOnClickListener(new View.OnClickListener() {
+
+
+
+        btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                demoMsg.setValue(editText3.getText().toString());
+                editText3.setText("");
+
+            }
+        });
+
+        btn6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                demoMsg.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String value = dataSnapshot.getValue(String.class);
+                        textView2.setText(value);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(MainActivity.this, "Error fetching data", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+
+
+        textView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 CharSequence label = "";
-                ClipData clip = ClipData.newPlainText(label, editText2.getText().toString());
+                ClipData clip = ClipData.newPlainText(label, textView.getText().toString());
                 clipboard.setPrimaryClip(clip);
+                return true;
+            }
+        });
+
+        textView2.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                CharSequence label = "";
+                ClipData clip = ClipData.newPlainText(label, textView2.getText().toString());
+                clipboard.setPrimaryClip(clip);
+                return true;
+            }
+        });
+
+        textView3.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                CharSequence label = "";
+                ClipData clip = ClipData.newPlainText(label, textView3.getText().toString());
+                clipboard.setPrimaryClip(clip);
+                return true;
+            }
+        });
+
+        editText1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editText1.setFocusable(true);
             }
         });
 
@@ -156,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String value = dataSnapshot.getValue(String.class);
-                        editText2.setText(value);
+                        textView3.setText(value);
                     }
 
                     @Override
@@ -176,6 +255,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
     }
+
+
+
+
+
 
     @Override
     public void onClick(View v){
